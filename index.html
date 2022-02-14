@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+	<head>
+		<title>SelectMyInsurance</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<header id="header">
+			<div class="wrapper clearfix">
+				<div class="span4">
+					<h1>Select<strong class="teal">My</strong>Insurance<span>.com</span></h1>
+				</div>
+				<div class="span4">
+					<h3 class="pt15 tr">COMPARE QUOTES EASILY</h3>
+				</div>
+				<div class="span5 grey cabin right tr">
+					insurance quotes | auto insurance | health insurance  
+				</div>
+			</div>
+			
+		</header>
+		<section id="main">
+			<div class="wrapper clearfix">
+				<div class="span8 right tr">
+					<h2>Save money on your auto insurance today!</h2>
+					<ul class="steps clearfix">
+						<li class="first">Select your Location</li>
+						<li class="second">Fill out a simple form</li>
+						<li class="third">Request a Quote</li>
+					</ul>
+				</div>
+				<div class="right form span7">
+					<div class="">
+						<h3 class="p20">Get started now!</h3>
+						<form method="POST" action="http://client.marksleblanc.com/selectmyinsurance/email.php" id="contact-form"><!-- UPDATE THIS -->
+							<ul class="forms clearfix">
+								<li class="left">
+									<label for="zip">Zip Code:</label>
+									<input type="text" placeholder="Zip Code" name="zip" id="zip" class="required" pattern="\d{5,5}(-\d{4,4})?" required>
+								</li>
+								<li class="left">
+									<label for="type">Quote Type:</label>
+									<select name="type" id="type" class="required" required>
+										<option value="">--Select Quote Type--</option>
+										<option value="Auto Insurance">Auto insurance</option>
+										<option value="Home insurance">Home insurance</option>
+										<option value="Health insurance">Health insurance</option>
+									</select>
+								</li>
+								<li class="left">
+									<input type="submit" class="btn pt20" value="START">
+								</li>
+							</ul>
+							<div id="feedback">
+								<p></p>
+							</div>
+						</form>
+					</div>
+					
+				</div>
+			</div>
+		</section>
+		<section id="find">
+			<div class="wrapper clearfix">
+				<div class="span6">
+					<h2 class="grey pt20">Find the right type of insurance for you:</h2>
+				</div>
+				<div class="span7 right">
+					<div class="span2 tc grey">
+						<img src="images/HomeIcon.png" alt="">
+						<h6>Home Insurance</h6>
+					</div>
+					<div class="span2 tc grey">
+						<img src="images/CarIcon.png" alt="">
+						<h6>Auto Insurance</h6>
+					</div>
+					<div class="span2 tc grey">
+						<img src="images/MedicalIcon.png" alt="">
+						<h6>Health Insurance</h6>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="bluebg tc clearfix">
+			<div class="wrapper">
+				<div class="span13">
+					<h2>How It Works</h2>
+					<p>Quisque luctus lectus quis imperdiet molestie. Sed varius enim faucibus erat congue, pharetra mattis risus dapibus. Nulla facilisis ultrices metus, nec varius tortor mattis quis. Vivamus massa felis, blandit nec varius ut, commodo vitae purus. Nunc vel semper nibh, eu ultrices enim. Aenean faucibus ante in nisl facilisis ultricies. Vivamus vitae porttitor dui. Fusce finibus rutrum sodales. Etiam ultricies, turpis et laoreet faucibus, diam nunc mattis ligula, sed laoreet sapien nunc sed nunc.</p>
+				</div>
+			</div>
+		</section>
+		<div id="logos" class="wrapper clearfix">
+			<div class="span13">
+				<img src="images/logos.png" alt="">
+			</div>
+		</div>
+		<footer id="footer">
+			<div class="wrapper tc">
+				<div class="span13">
+					<p>2014 SelectMyInsurance.com. All Rights Reserved.</p>
+				</div>
+			</div>
+		</footer>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.0.js"></script>
+		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var form = $(this);
+				var post_url = form.attr('action');
+				var post_data = form.serialize();
+				$('#contact-form').submit(function(e){
+					e.preventDefault();
+					$('#feedback p').html('Submitting...');
+					var form = $(this);
+					var post_url = form.attr('action');
+					var post_data = form.serialize();
+					var valid  = true;
+					var firstInput = null;
+					$('.required').each(function(){
+						var value = $(this).val();
+						if (value == ''){
+							$(this).addClass('error');
+							valid=false;
+							if(firstInput == null){
+								firstInput = $(this);
+								$('#feedback p').html('');
+								$('#feedback p').html('Please fill in the required fields.');
+							}
+						} else {
+							valid=true;
+						}
+					});
+					$.ajax({
+						type: 'POST',
+						url: post_url,
+						data: post_data,
+						success: function(msg){
+							$(this).removeClass('error');
+							$('#feedback p').html('');
+							$('#feedback p').html(msg);
+							if(msg == 'Please enter a valid email address.'){
+								$('#email').addClass('error');
+							} else if (msg == 'Thanks. Your email was sent successfully.'){
+								$('.required').removeClass('error');
+							}
+						},
+						error: function(msg){
+							$('#feedback p').html('');
+							$('#feedback p').html(msg);
+						}
+					});
+				});
+			});
+		</script>
+		<script type="text/javascript" src="js/html5shiv.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+	</body>
+</html>
